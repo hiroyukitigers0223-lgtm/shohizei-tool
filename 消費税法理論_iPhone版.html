@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>消費税法理論 音声読み上げ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        body {
+            padding-bottom: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 12px;
+            text-align: center;
+            margin-bottom: 12px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        header h1 {
+            font-size: 1.4em;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0 10px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .panel h2 {
+            font-size: 0.95em;
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+
+        .panel h3 {
+            font-size: 0.85em;
+            color: #555;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+
+        textarea {
+            height: 180px;
+            font-family: -apple-system, BlinkMacSystemFont, monospace;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+
+        .btn-play { background: #27ae60; }
+        .btn-selected { background: #3498db; }
+        .btn-pause { background: #f39c12; }
+        .btn-stop { background: #e74c3c; }
+        .btn-save { background: #9b59b6; }
+        .btn-add { background: #16a085; margin-bottom: 6px; }
+        .btn-import { background: #8e44ad; }
+        .btn-export { background: #16a085; }
+
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .button-row button {
+            margin-bottom: 0;
+        }
+
+        .info-text {
+            font-size: 0.75em;
+            color: #666;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .status-box {
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            background: white;
+            font-size: 0.8em;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .status-box.success {
+            border-left-color: #27ae60;
+            background: #f0fff4;
+            color: #27ae60;
+        }
+
+        .status-box.error {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+            color: #c0392b;
+        }
+
+        .section-list {
+            font-size: 0.8em;
+            max-height: 140px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border-radius: 6px;
+            padding: 6px;
+            margin-bottom: 8px;
+        }
+
+        .section-item {
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #667eea;
+        }
+
+        .section-item span {
+            flex: 1;
+            cursor: pointer;
+            padding-right: 8px;
+        }
+
+        .section-item button {
+            padding: 4px 8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.7em;
+            margin: 0;
+            width: auto;
+            min-height: auto;
+        }
+
+        .ruby-item {
+            padding: 6px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            font-size: 0.75em;
+            border-left: 2px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ruby-item button {
+            padding: 2px 6px;
+            background: #e74c3c;
+            font-size: 0.7em;
+            margin: 0;
+            width: auto;
+            min-height: auto;
+        }
+
+        .ruby-list {
+            max-height: 100px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border-radius: 6px;
+            padding: 6px;
+            margin-bottom: 8px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 8px 12px;
+            background: white;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.8em;
+            color: #666;
+            font-weight: bold;
+            margin: 0;
+            min-height: auto;
+            width: auto;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .speed-control label {
+            font-size: 0.8em;
+            font-weight: bold;
+            width: 40px;
+        }
+
+        .speed-control input[type="range"] {
+            flex: 1;
+            margin: 0;
+            height: 5px;
+        }
+
+        .speed-control span {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #667eea;
+            width: 35px;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .import-box {
+            background: #fff5f0;
+            border: 2px solid #8e44ad;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: none;
+        }
+
+        .import-box textarea {
+            height: 100px;
+            font-size: 0.75em;
+            margin-bottom: 8px;
+        }
+
+        .export-box {
+            background: #f0f8ff;
+            border: 2px solid #16a085;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: none;
+        }
+
+        .export-box textarea {
+            height: 100px;
+            font-size: 0.65em;
+            margin-bottom: 6px;
+            font-family: monospace;
+        }
+
+        .export-box p {
+            font-size: 0.7em;
+            color: #666;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔊 消費税法理論テキスト</h1>
+        <p>iPhone版 音声読み上げツール</p>
+    </header>
+
+    <div class="container">
+        <!-- セクション管理 -->
+        <div class="panel">
+            <h2>📚 セクション管理</h2>
+            
+            <select id="sectionSelect" onchange="selectSection()">
+                <option value="">➕ 新規セクション</option>
+            </select>
+
+            <div class="button-row">
+                <input type="text" id="newSectionName" placeholder="例：1-1">
+                <button class="btn-add" onclick="addNewSection()">追加</button>
+            </div>
+
+            <h3>登録済みセクション</h3>
+            <div class="section-list" id="sectionList">
+                <p style="color: #999; font-size: 0.75em;">なし</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('global', this)">🌍 全体</button>
+                <button class="tab-btn" onclick="switchTab('local', this)">📌 セクション</button>
+            </div>
+
+            <div id="global" class="tab-content active">
+                <h3>全体ふりがな</h3>
+                <div class="button-row">
+                    <input type="text" id="gRubyText" placeholder="漢字" style="margin-bottom: 0;">
+                    <input type="text" id="gRubyRead" placeholder="よみ" style="margin-bottom: 0;">
+                </div>
+                <button class="btn-add" onclick="addGlobalRuby()" style="margin-bottom: 8px;">+ 追加</button>
+                <div class="ruby-list" id="globalRubyList">
+                    <p style="color: #999; font-size: 0.75em;">なし</p>
+                </div>
+            </div>
+
+            <div id="local" class="tab-content">
+                <h3>セクション専用ふりがな</h3>
+                <div class="button-row">
+                    <input type="text" id="lRubyText" placeholder="漢字" style="margin-bottom: 0;">
+                    <input type="text" id="lRubyRead" placeholder="よみ" style="margin-bottom: 0;">
+                </div>
+                <button class="btn-add" onclick="addLocalRuby()" style="margin-bottom: 8px;">+ 追加</button>
+                <div class="ruby-list" id="localRubyList">
+                    <p style="color: #999; font-size: 0.75em;">選択してください</p>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button class="btn-export" onclick="showExportData()">📤 保存</button>
+                <button class="btn-import" onclick="toggleImportBox()">📥 読込</button>
+            </div>
+            <button onclick="clearAllData()" style="background: #95a5a6; margin-bottom: 8px; width: 100%;">🗑️ すべて削除</button>
+            <input type="file" id="fileInput" accept=".json" onchange="importData(event)">
+
+            <div id="exportBox" class="export-box">
+                <p>📝 JSONテキストを長押し → 「コピー」を選択</p>
+                <textarea id="exportText" readonly></textarea>
+                <p style="text-align: center;">✅ コピーしたテキストをメール/LINEに貼付して共有</p>
+            </div>
+
+            <div id="importBox" class="import-box">
+                <p>📝 受け取ったJSONテキストを貼付してください：</p>
+                <textarea id="importText" placeholder="JSONテキストをここに貼付"></textarea>
+                <button class="btn-import" onclick="importFromText()">📥 読み込む</button>
+            </div>
+        </div>
+
+        <!-- テキスト編集＆再生 -->
+        <div class="panel">
+            <h2>✏️ 編集＆再生</h2>
+            
+            <div id="sectionInfo" style="padding: 10px; background: #f0f0f0; border-radius: 6px; margin-bottom: 8px; font-size: 0.8em; font-weight: bold; color: #667eea;">
+                セクション未選択
+            </div>
+
+            <textarea id="textEditor" placeholder="テキストをコピペしてください"></textarea>
+
+            <div class="info-text">
+                📊 文字: <span id="charCount">0</span> | 選択: <span id="selectedCount">0</span>
+            </div>
+
+            <div class="speed-control">
+                <label>速度:</label>
+                <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
+                <span><span id="speedVal">1.0</span>x</span>
+            </div>
+
+            <button class="btn-play" onclick="playAll()">▶️ 全文を再生</button>
+            <button class="btn-selected" onclick="playSelected()">▶️ 選択範囲を再生</button>
+
+            <div class="button-row">
+                <button class="btn-pause" onclick="togglePause()">⏸️ 一時停止</button>
+                <button class="btn-stop" onclick="stopAudio()">⏹️ 停止</button>
+            </div>
+
+            <button class="btn-save" onclick="saveSection()">💾 このセクションを保存</button>
+
+            <div class="status-box info" id="status">
+                🟢 準備完了
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var synth = window.speechSynthesis;
+        var isSpeaking = false;
+        var currentSection = null;
+        var allSections = {};
+        var globalRuby = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDataFromStorage();
+            setupListeners();
+        });
+
+        // ローカルストレージ機能
+        function saveDataToStorage() {
+            var data = {
+                sections: allSections,
+                globalRuby: globalRuby
+            };
+            localStorage.setItem('consumptionTaxData', JSON.stringify(data));
+        }
+
+        function loadDataFromStorage() {
+            var saved = localStorage.getItem('consumptionTaxData');
+            if (saved) {
+                try {
+                    var data = JSON.parse(saved);
+                    allSections = data.sections || {};
+                    globalRuby = data.globalRuby || {};
+                    updateSectionList();
+                    updateGlobalRubyDisplay();
+                    if (Object.keys(allSections).length > 0) {
+                        status('✅ 前回のデータを復元', 'success');
+                    }
+                } catch (error) {
+                    console.error('データ復元エラー:', error);
+                }
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('すべてのデータを削除しますか？')) {
+                allSections = {};
+                globalRuby = {};
+                currentSection = null;
+                localStorage.removeItem('consumptionTaxData');
+                updateSectionList();
+                updateGlobalRubyDisplay();
+                document.getElementById('textEditor').value = '';
+                document.getElementById('sectionInfo').textContent = 'セクション未選択';
+                status('🗑️ すべてのデータを削除', 'success');
+            }
+        }
+
+        // セクション管理
+        function addNewSection() {
+            var name = document.getElementById('newSectionName').value.trim();
+            if (!name) {
+                status('❌ セクション名を入力', 'error');
+                return;
+            }
+            if (allSections[name]) {
+                status('❌ 既に存在', 'error');
+                return;
+            }
+            allSections[name] = { text: '', local: {} };
+            saveDataToStorage();
+            document.getElementById('newSectionName').value = '';
+            updateSectionList();
+            document.getElementById('sectionSelect').value = name;
+            selectSection();
+        }
+
+        function updateSectionList() {
+            var list = document.getElementById('sectionList');
+            var select = document.getElementById('sectionSelect');
+            var keys = Object.keys(allSections).sort();
+            
+            select.innerHTML = '<option value="">➕ 新規セクション</option>';
+            list.innerHTML = '';
+
+            keys.forEach(function(key) {
+                var opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = key;
+                select.appendChild(opt);
+
+                var item = document.createElement('div');
+                item.className = 'section-item';
+                
+                var span = document.createElement('span');
+                span.textContent = key;
+                span.onclick = (function(k) {
+                    return function() {
+                        selectSectionByName(k);
+                    };
+                })(key);
+                
+                var btn = document.createElement('button');
+                btn.textContent = '削除';
+                btn.onclick = (function(k) {
+                    return function() {
+                        deleteSection(k);
+                    };
+                })(key);
+                
+                item.appendChild(span);
+                item.appendChild(btn);
+                list.appendChild(item);
+            });
+
+            if (keys.length === 0) {
+                list.innerHTML = '<p style="color: #999; font-size: 0.75em;">なし</p>';
+            }
+        }
+
+        function selectSectionByName(name) {
+            document.getElementById('sectionSelect').value = name;
+            selectSection();
+        }
+
+        function selectSection() {
+            var name = document.getElementById('sectionSelect').value;
+            if (!name) {
+                currentSection = null;
+                document.getElementById('textEditor').value = '';
+                document.getElementById('sectionInfo').textContent = 'セクション未選択';
+                document.getElementById('localRubyList').innerHTML = '<p style="color: #999; font-size: 0.75em;">選択してください</p>';
+                return;
+            }
+            currentSection = name;
+            document.getElementById('sectionInfo').textContent = '📖 ' + name;
+            document.getElementById('textEditor').value = allSections[name].text;
+            updateCharCount();
+            updateLocalRubyDisplay();
+            status('セクション「' + name + '」を選択', 'info');
+        }
+
+        function deleteSection(name) {
+            if (confirm('「' + name + '」を削除しますか？')) {
+                delete allSections[name];
+                if (currentSection === name) currentSection = null;
+                saveDataToStorage();
+                updateSectionList();
+                document.getElementById('sectionSelect').value = '';
+                selectSection();
+                status('🗑️ 削除しました', 'success');
+            }
+        }
+
+        // ふりがな管理
+        function addGlobalRuby() {
+            var text = document.getElementById('gRubyText').value.trim();
+            var read = document.getElementById('gRubyRead').value.trim();
+            if (!text || !read) {
+                status('❌ 入力してください', 'error');
+                return;
+            }
+            globalRuby[text] = read;
+            saveDataToStorage();
+            document.getElementById('gRubyText').value = '';
+            document.getElementById('gRubyRead').value = '';
+            updateGlobalRubyDisplay();
+            status('✅ 追加', 'success');
+        }
+
+        function updateGlobalRubyDisplay() {
+            var list = document.getElementById('globalRubyList');
+            var keys = Object.keys(globalRuby);
+            list.innerHTML = '';
+            if (keys.length === 0) {
+                list.innerHTML = '<p style="color: #999; font-size: 0.75em;">なし</p>';
+                return;
+            }
+            keys.forEach(function(k) {
+                var item = document.createElement('div');
+                item.className = 'ruby-item';
+                var span = document.createElement('span');
+                span.textContent = k + ' → ' + globalRuby[k];
+                var btn = document.createElement('button');
+                btn.textContent = '削除';
+                btn.onclick = (function(key) {
+                    return function() {
+                        deleteGlobalRuby(key);
+                    };
+                })(k);
+                item.appendChild(span);
+                item.appendChild(btn);
+                list.appendChild(item);
+            });
+        }
+
+        function deleteGlobalRuby(text) {
+            delete globalRuby[text];
+            saveDataToStorage();
+            updateGlobalRubyDisplay();
+        }
+
+        function addLocalRuby() {
+            if (!currentSection) {
+                status('❌ セクションを選択', 'error');
+                return;
+            }
+            var text = document.getElementById('lRubyText').value.trim();
+            var read = document.getElementById('lRubyRead').value.trim();
+            if (!text || !read) return;
+            allSections[currentSection].local[text] = read;
+            saveDataToStorage();
+            document.getElementById('lRubyText').value = '';
+            document.getElementById('lRubyRead').value = '';
+            updateLocalRubyDisplay();
+            status('✅ 追加', 'success');
+        }
+
+        function updateLocalRubyDisplay() {
+            var list = document.getElementById('localRubyList');
+            if (!currentSection) {
+                list.innerHTML = '<p style="color: #999; font-size: 0.75em;">選択してください</p>';
+                return;
+            }
+            var local = allSections[currentSection].local || {};
+            var keys = Object.keys(local);
+            list.innerHTML = '';
+            if (keys.length === 0) {
+                list.innerHTML = '<p style="color: #999; font-size: 0.75em;">なし</p>';
+                return;
+            }
+            keys.forEach(function(k) {
+                var item = document.createElement('div');
+                item.className = 'ruby-item';
+                var span = document.createElement('span');
+                span.textContent = k + ' → ' + local[k];
+                var btn = document.createElement('button');
+                btn.textContent = '削除';
+                btn.onclick = (function(key) {
+                    return function() {
+                        deleteLocalRuby(key);
+                    };
+                })(k);
+                item.appendChild(span);
+                item.appendChild(btn);
+                list.appendChild(item);
+            });
+        }
+
+        function deleteLocalRuby(text) {
+            if (!currentSection) return;
+            delete allSections[currentSection].local[text];
+            saveDataToStorage();
+            updateLocalRubyDisplay();
+        }
+
+        // 再生機能
+        function saveSection() {
+            if (!currentSection) {
+                status('❌ セクション未選択', 'error');
+                return;
+            }
+            allSections[currentSection].text = document.getElementById('textEditor').value;
+            saveDataToStorage();
+            status('💾 保存', 'success');
+        }
+
+        function playAll() {
+            if (!currentSection) {
+                status('❌ セクション未選択', 'error');
+                return;
+            }
+            var text = document.getElementById('textEditor').value;
+            if (!text) {
+                status('❌ テキストなし', 'error');
+                return;
+            }
+            playText(text);
+        }
+
+        function playSelected() {
+            var area = document.getElementById('textEditor');
+            var text = area.value.substring(area.selectionStart, area.selectionEnd);
+            if (!text) {
+                status('❌ 選択してください', 'error');
+                return;
+            }
+            playText(text);
+        }
+
+        function playText(text) {
+            if (isSpeaking) return;
+
+            Object.keys(globalRuby).forEach(function(k) {
+                text = text.split(k).join('{' + k + '|' + globalRuby[k] + '}');
+            });
+
+            if (currentSection && allSections[currentSection].local) {
+                Object.keys(allSections[currentSection].local).forEach(function(k) {
+                    text = text.split(k).join('{' + k + '|' + allSections[currentSection].local[k] + '}');
+                });
+            }
+
+            text = text.replace(/\{[^|]*\|([^}]*)\}/g, '$1');
+
+            var paragraphs = text.split('\n').filter(function(p) { return p.trim(); });
+            var pIndex = 0;
+            isSpeaking = true;
+
+            function playNextPara() {
+                if (pIndex >= paragraphs.length) {
+                    isSpeaking = false;
+                    status('✅ 完了', 'success');
+                    return;
+                }
+                var para = paragraphs[pIndex++];
+                var words = para.split(' ').filter(function(w) { return w; });
+                var wIndex = 0;
+
+                function playNextWord() {
+                    if (wIndex >= words.length) {
+                        setTimeout(playNextPara, 1000);
+                        return;
+                    }
+                    var word = words[wIndex++];
+                    synth.cancel();
+                    var u = new SpeechSynthesisUtterance(word);
+                    u.lang = 'ja-JP';
+                    u.rate = parseFloat(document.getElementById('speed').value);
+                    u.onend = () => setTimeout(playNextWord, 500);
+                    u.onerror = () => { isSpeaking = false; status('❌ エラー', 'error'); };
+                    synth.speak(u);
+                }
+                playNextWord();
+            }
+            playNextPara();
+        }
+
+        function togglePause() {
+            if (synth.paused) synth.resume();
+            else synth.pause();
+        }
+
+        function stopAudio() {
+            synth.cancel();
+            isSpeaking = false;
+            status('⏹️ 停止', 'info');
+        }
+
+        // インポート/エクスポート
+        function showExportData() {
+            if (Object.keys(allSections).length === 0) {
+                status('❌ 保存するデータがありません', 'error');
+                return;
+            }
+            var data = {
+                sections: allSections,
+                globalRuby: globalRuby,
+                exportDate: new Date().toLocaleString('ja-JP')
+            };
+            var json = JSON.stringify(data, null, 2);
+            document.getElementById('exportText').value = json;
+            document.getElementById('exportBox').style.display = 'block';
+            status('📤 JSONを表示しました。長押しでコピー', 'success');
+        }
+
+        function toggleImportBox() {
+            var box = document.getElementById('importBox');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function importFromText() {
+            var jsonText = document.getElementById('importText').value.trim();
+            if (!jsonText) {
+                status('❌ JSONテキストを貼付してください', 'error');
+                return;
+            }
+
+            try {
+                var data = JSON.parse(jsonText);
+                if (!data.sections) {
+                    status('❌ 形式が正しくありません', 'error');
+                    return;
+                }
+                
+                var existingCount = Object.keys(allSections).length;
+                if (existingCount > 0) {
+                    if (!confirm('既存データが' + existingCount + '個あります。上書きしますか？')) {
+                        return;
+                    }
+                }
+
+                allSections = data.sections || {};
+                globalRuby = data.globalRuby || {};
+                saveDataToStorage();
+                updateSectionList();
+                updateGlobalRubyDisplay();
+                document.getElementById('importText').value = '';
+                document.getElementById('importBox').style.display = 'none';
+                status('📥 読込完了。セクション: ' + Object.keys(allSections).length, 'success');
+            } catch (error) {
+                status('❌ JSONが正しくありません', 'error');
+            }
+        }
+
+        function updateCharCount() {
+            var text = document.getElementById('textEditor').value;
+            var area = document.getElementById('textEditor');
+            var selected = text.substring(area.selectionStart, area.selectionEnd);
+            document.getElementById('charCount').textContent = text.length;
+            document.getElementById('selectedCount').textContent = selected.length;
+        }
+
+        function setupListeners() {
+            document.getElementById('textEditor').addEventListener('input', updateCharCount);
+            document.getElementById('textEditor').addEventListener('mouseup', updateCharCount);
+            document.getElementById('textEditor').addEventListener('keyup', updateCharCount);
+            document.getElementById('speed').addEventListener('change', function() {
+                document.getElementById('speedVal').textContent = this.value;
+            });
+        }
+
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function status(msg, type) {
+            var el = document.getElementById('status');
+            el.className = 'status-box ' + (type || 'info');
+            el.textContent = msg;
+        }
+    </script>
+</body>
+</html>
